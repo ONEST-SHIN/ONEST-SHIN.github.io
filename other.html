@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>0 N E S T</title>
+	<link rel="stylesheet" href="css/style.css">
+	
+		
+</head>	
+<title> aaaaaaaaaaaaaaaaaaaaaaa</title>
+<a  href="index.html">
+<button> click thabutton </button>
+</a>
+<a href="index.html" class="button">click the button</a>
+    </head>
+	
+
+	<body >
+		<script src="scripts.js"></script>
+		<div class="bodycontainer">
+		  <div id="cube"><img src="img/ship.gif" style="z-index:1;position:absolute;"><div id="target" style="z-index:-1;position:absolute;"></div><div id="target2" style="z-index:-1;position:absolute;"></div></div>
+
+		<div class="spacebg" style="-webkit-animation: backgroundScroll 10s linear infinite; animation: backgroundScroll 10s linear infinite; background-position: center; height: 400%;z-index:-1;"></div>
+		<div class="spacebg2" style="-webkit-animation: backgroundScroll2 15s linear infinite; animation: backgroundScroll2 15s linear infinite; background-position: center; height: 400%; top: -800px;z-index:-1;"></div>
+		
+		
+	</body>
+	  
+	  <script src="http://code.jquery.com/jquery-latest.js"></script>
+	  <script type="text/javascript">
+	  $(document).ready(function() {
+		  $("body").mousemove(function (e) {
+			  $("#cube").stop();
+				  handleMouseMove(e);
+			  });
+	  
+		  function handleMouseMove(event) {
+	  
+			var x = event.pageX,
+				y = event.pageY;
+	  
+				$("#cube").animate({
+				  left: x,
+				  top: y
+				}, 50);
+	  
+		  }
+	  });
+		  
+	  $('body').click(function(e) {
+		  $('<div />').addClass('shot').css({
+			  top: e.offsetY - 0,
+			  left: e.offsetX - 0
+		  }).appendTo('#target');
+		  setTimeout(removeshot, 0);
+	  });
+	  
+	  $('body').click(function(e) {
+		  $('<div />').addClass('shot2').css({
+			  top: e.offsetY - 0,
+			  left: e.offsetX - 0
+		  }).appendTo('#target2');
+		  setTimeout(removeshot2, 0);
+	  });
+	  
+	  
+	  function removeshot() {
+		  $('#target .shot:not(:animated):first').fadeOut(function() {
+			  $(this).remove();
+		  });
+	  }
+	  
+	  function removeshot2() {
+		  $('#target2 .shot2:not(:animated):first').fadeOut(function() {
+			  $(this).remove();
+		  });
+	  }
+	  </script>
+	  <style>
+	  
+		* {	
+				box-sizing: border-box;
+				cursor:  auto;
+				}
+			  .flex {	
+				display: flex;}
+			  .clearfix::after {	
+				content: "";
+				clear: both;
+				display: table;}
+			  .hide:not(.hide:focus) {
+				clip: rect(0 0 0 0);
+				clip-path: inset(50%);
+				height: 1px;
+				overflow: hidden;
+				position: absolute;
+				white-space: nowrap;
+				width: 1px;
+			  }
+		body{
+		  
+		  background-color: black;
+		  
+		}
+		 
+		
+			.spacebg {
+		  width:150%;
+		  min-height:calc(100vh + 400px);
+		  position:fixed;
+		  top:0;
+		  left:-250px;
+		  background-image: url("/test-CSS/starTest.gif");
+		  z-index:-1;
+		  }
+		#cube {
+		  height:60px;
+		  width:31px;
+		  margin-top:10px;
+		  margin-left:-15px;
+		  background:transparent;
+		  position:absolute;
+		  top:50%;
+		  left:50%;   
+		  z-index: 100;
+		}
+		
+		.shot {
+			width: 2px;
+			height: 7px;
+			background-color: yellow;
+			background-size: cover;
+			animation: shoot 0.4s 1 linear alternate;
+			z-index:0;
+		pointer-events:none;
+		}
+		@-webkit-keyframes shoot {
+				0% {transform: translateY(-8px) translateX(8px);}
+				100% {transform: translateY(-100px) translateX(8px);}
+				}
+		
+		.shot2 {
+			width: 2px;
+			height: 7px;
+			background-color: yellow;
+			background-size: cover;
+			animation: shoot2 0.4s 1 linear alternate;
+			z-index:0;
+		pointer-events:none;
+		}
+			@-webkit-keyframes shoot2 {
+				0% {transform: translateY(-8px) translateX(20px);}
+				100% {transform: translateY(-100px) translateX(20px);}
+				}
+		
+
+
+			
+	body {
+		border-radius: 4rem;
+		background-image: url("img/pixelcity.gif");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-attachment: fixed;
+		background-size: cover;
+	  }
+	  
+	  </style>
+
+
+
+<p>Use display: grid; to make a block-level grid container:</p>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+	<div class="grid-container">
+	  <div class="grid-item">1</div>
+	 <div class="grid-item">2</div>
+	  <div class="grid-item">3</div>  
+	  <div class="grid-item">4</div>
+	  <div class="grid-item">5</div>
+	  <div class="grid-item">6</div>  
+	  <div class="grid-item">7</div>
+	  <div class="grid-item">8</div>
+	  <div class="grid-item">9</div>  
+</div>
+
+
+
+	</body>
+
+<html>
+
+
+

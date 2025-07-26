@@ -2,11 +2,11 @@ body {
     font-family: Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background: #f4f4f4;
+    background: #270056;
     color: #000000;
 }
 nav {
-    background: #97bd9e;
+    background: #07003b;
     color: hsl(246, 96%, 10%);
     padding: 10px;
     display: flex;
@@ -65,7 +65,7 @@ footer {
 }
 
 .menu a {
-  background-color: #e5e5e5;
+  background-color: #002b36;
   padding: 8px;
   margin-top: 7px;
   display: block;

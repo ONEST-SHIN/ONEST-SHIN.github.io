@@ -5,38 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>0 N E S T</title>
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+    :root {
+      --accent: #f08c00;
+      --bg: #000000;
+      --text: white;
+      --highlight: #00FF80;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: url('https://i.pinimg.com/originals/53/4e/f3/534ef3554088173d553f4c5a1535a1f6.gif'); 
+      color: var(--text);
+      font-family: "Courier", monospace;
+      cursor: crosshair;
+      overflow-x: hidden;
+    }
+
+    .wrapper {
+      max-width: 1024px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(14, [col-start] 1fr);
+      grid-template-rows: auto 1fr auto;
+      grid-gap: 15px;
+      padding: 10px;
+      min-height: 100vh;
+    }
+
+    .wrapper > * {
+      background-color: #000000D9;
+      border: 2px outset var(--accent);
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    header {
+      grid-column: col-start / span 14;
+      text-align: center;
+      padding-top: 6px;
+    }
+
+    .main-nav {
+      grid-column: col-start / span 4;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content {
+      grid-column: col-start 5 / span 6;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-side {
+      grid-column: col-start 11 / span 4;
+      display: flex;
+      flex-direction: column;
+    }
+
+    footer {
+      grid-column: col-start / span 14;
+      text-align: center;
+    }
+
+    a {
+      color: var(--highlight);
+      text-decoration: none;
+    }
+
+    a:hover {
+      background-size: 4px 50px;
+      color: black;
+      cursor: crosshair;
+    }
+
+    @media (max-width: 768px) {
+      .main-nav, .main-side {
+        grid-column: col-start / span 7;
+      }
+
+      .main-nav {
+        order: 1;
+      }
+
+      .main-side {
+        order: 2;
+      }
+
+      .main-content {
+        grid-column: col-start / span 14;
+        order: 0;
+      }
+    }
+  </style>
+  
+
 </head>
-<body style="font-family:Verdana;color:#aaaaaa;">
+<body>
+  <div class="wrapper">
+    <header class="main-head">
+      <a href="#" style="max-width: 100%;">0nest's website</a>
+    </header>
 
-<div style="background-color:#e5e5e5;padding:15px;text-align:center;">
-  <h1>0nest's website</h1>
-</div>
+    <nav class="main-nav">
+      <div><img src="https://afdj.com.au/wp-content/uploads/2021/02/shark-3197585_1280.jpg" style="width:100%;"></div>
+      <div class="menu">
+        <a href="/home.html">Home</a><br>
+        <a href="/projects/index.html">Projects</a><br>
+        <a href="/gallery/index.html">Gallery</a><br>
+        <a href="/journal/index.html">Journal</a><br>
+        <a href="/about.html">About</a><br>
+        <a href="/contact.html">Contact</a><br>
+      </div>
+    </nav>
 
-<div style="overflow:auto">
-  <div class="menu">
-    <a href="/home.html">Home</a>
-    <a href="/projects/index.html">Projects</a>
-    <a href="/gallery/index.html">Gallery</a>
-    <a href="/journal/index.html">Journal</a>
-    <a href="/about.html">About</a>
-    <a href="/contact.html">Contact</a>
-  </div>
+    <main class="main-content">
+      <h2>Welcome</h2>
+      <p>Welcome to 0nest's site. It's still getting built so this will be used as a checklist of things I need/want to build:<br>
+      1. music room<br>
+      2. link to other websites<br>
+      3. cool front page<br>
+      4. gif background</p>
+      <iframe src="https://assets.pinterest.com/ext/embed.html?id=16395986140001095" height="532" width="345" frameborder="0" scrolling="no" ></iframe> 
+    </main>
 
-  <div class="main">
-    <h2>my inspo</h2>
-    <a href="https://vertpush.neocities.org/"><img style="width: 88px; height: 31px;" src="https://vertpush.neocities.org/buttons/vertpushbutton2.gif"/></a>
-    <p>Resize the browser window to see the responsive effect.</p>
-    <iframe src="https://www3.cbox.ws/box/?boxid=3547828&boxtag=wdF9if" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
-  </div>
+    <nav class="main-side">
+      <h2>Inspo</h2>
+      <a href="https://vertpush.neocities.org/">
+        <img style="width: 88px; height: 31px;" src="https://vertpush.neocities.org/buttons/vertpushbutton2.gif" />
+      </a>
+      <p>Resize the browser window to see the responsive effect.</p>
+      <h2>EXTRAS</h2>
+      <a href="#">» Gallery</a><br>
+      <a href="#">» Web Tools</a><br>
+      <a href="#">» Resources</a><br>
+      <iframe src="https://www3.cbox.ws/box/?boxid=3547828&boxtag=wdF9if" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
+    </nav>
 
-  <div class="right">
-    <h2>About</h2>
-    <p>Welcome to 0nest's site. its still gettign built so this will be used as a ckeck box of thinsg i need/want to build. 
-      1.musicroom 
-      2.linkto other website 
-      3.coolfront page
-      4.gif background 
-    </p>
+    <footer class="box footer">
+      <div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;">© 2024 0nest</div>
+    </footer>
   </div>
 </div>
 

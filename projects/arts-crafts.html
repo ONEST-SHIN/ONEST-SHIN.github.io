@@ -27,6 +27,221 @@
     <p>Content for arts-crafts goes here.</p>
   </div>
 
+
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Floating Draggable Retro Boxes</title>
+<style>
+  :root{
+    --bg:#c0c0c0; --edge:#f0f0f0; --shadow:#7a7a7a; --white:#fff;
+  }
+  html,body{height:100%;margin:0;background:#9ca3af;font-family:system-ui,Segoe UI,Arial,sans-serif}
+  /* GENERIC FLOATING WINDOW */
+  .window{
+    position:fixed; /* key: not inside any element */
+    left: 10vw; top: 10vh; width: 360px; min-width:200px; min-height:120px;
+    background:var(--bg); border:1px solid var(--shadow);
+    box-shadow:inset -1px -1px 0 var(--edge), inset 1px 1px 0 var(--white), 0 6px 20px rgba(0,0,0,.25);
+    border-radius:3px; resize:both; overflow:hidden; display:flex; flex-direction:column;
+  }
+  .titlebar{
+    display:flex; justify-content:space-between; align-items:center;
+    background:linear-gradient(#1a3c91,#0b2a7c); color:#fff; padding:2px 6px; font-size:12px;
+    cursor:grab; user-select:none; touch-action:none; /* important for touch dragging */
+  }
+  .titlebar:active{cursor:grabbing}
+  .controls{display:flex; gap:4px}
+  .ctrl{
+    width:14px; height:14px; background:var(--bg); border:1px solid var(--shadow);
+    font-size:11px; line-height:12px; text-align:center; user-select:none;
+  }
+  .content{display:flex; flex-direction:column; gap:6px; padding:6px; flex:1; min-height:0}
+  .badge-strip{
+    display:flex; gap:4px; flex-wrap:wrap; background:#e5e7eb; border:1px solid var(--shadow); padding:4px; flex-shrink:0;
+  }
+  .badge-strip img{width:88px; height:31px; image-rendering:pixelated; object-fit:cover}
+  .copy-wrap{display:flex; flex-direction:column; flex:1; min-height:0}
+  textarea{
+    width:100%; flex:1; min-height:60px; resize:none; padding:6px;
+    font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px;
+    border:1px solid var(--shadow); box-sizing:border-box;
+  }
+  button{
+    align-self:flex-end; margin-top:6px; padding:4px 8px; font-size:12px; cursor:pointer;
+    border:1px solid var(--shadow); background:#dcdcdc;
+  }
+</style>
+</head>
+<body>
+
+<!-- Window #1 -->
+<div class="window" style="left:8vw;top:12vh">
+  <div class="titlebar">
+    <div>LINK BADGE</div>
+    <div class="controls" aria-hidden="true">
+      <div class="ctrl" data-minimize>−</div>
+      <div class="ctrl" data-center>□</div>
+      <div class="ctrl" data-close>×</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="badge-strip">
+      <a href="https://onest-shin.github.io/" target="_blank">
+        <img src="https://files.catbox.moe/01m2cs.gif" alt="badge">
+      </a>
+    </div>
+    <div class="copy-wrap">
+      <textarea id="code1" spellcheck="false">&lt;a href="https://onest-shin.github.io/" target="_blank"&gt;&lt;img src="https://files.catbox.moe/01m2cs.gif" alt="ONEST 88x31"&gt;&lt;/a&gt;</textarea>
+      <button data-copy="#code1">Copy</button>
+    </div>
+  </div>
+</div>
+
+<!-- Window #2 (duplicate to test multiple) -->
+<div class="window" style="left:45vw;top:18vh;width:320px">
+  <div class="titlebar">
+    <div>NOTES</div>
+    <div class="controls" aria-hidden="true">
+      <div class="ctrl" data-minimize>−</div>
+      <div class="ctrl" data-center>□</div>
+      <div class="ctrl" data-close>×</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="copy-wrap">
+      <textarea id="code2" placeholder="Type here..."></textarea>
+      <button data-copy="#code2">Copy</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Bring clicked window to front */
+let z = 10;
+document.addEventListener('pointerdown', (e) => {
+  const win = e.target.closest('.window');
+  if (win){ win.style.zIndex = ++z; }
+});
+
+/* Copy buttons */
+document.querySelectorAll('button[data-copy]').forEach(btn=>{
+  btn.addEventListener('click', async () => {
+    const sel = btn.getAttribute('data-copy');
+    const ta = document.querySelector(sel);
+    try{
+      await navigator.clipboard.writeText(ta.value);
+      btn.textContent = 'Copied!';
+      setTimeout(()=>btn.textContent='Copy', 1000);
+    }catch{
+      ta.select(); document.execCommand('copy');
+      btn.textContent = 'Copied!';
+      setTimeout(()=>btn.textContent='Copy', 1000);
+    }
+  });
+});
+
+/* Minimize / center / close (soft close) */
+document.querySelectorAll('.window').forEach(win=>{
+  const content = win.querySelector('.content');
+  win.querySelectorAll('[data-minimize]').forEach(ctrl=>{
+    ctrl.addEventListener('click', ()=>{
+      const hidden = content.style.display === 'none';
+      content.style.display = hidden ? 'flex' : 'none';
+      // keep a tiny height when minimized for the titlebar
+      win.style.height = hidden ? '' : '28px';
+    });
+  });
+  win.querySelectorAll('[data-center]').forEach(ctrl=>{
+    ctrl.addEventListener('click', ()=>{
+      const W = window.innerWidth, H = window.innerHeight;
+      const w = win.offsetWidth, h = win.offsetHeight;
+      win.style.left = Math.max(0,(W - w)/2) + 'px';
+      win.style.top  = Math.max(0,(H - h)/2) + 'px';
+    });
+  });
+  win.querySelectorAll('[data-close]').forEach(ctrl=>{
+    ctrl.addEventListener('click', ()=> win.remove());
+  });
+});
+
+/* Dragging logic (titlebar is the handle). Works with mouse & touch via Pointer Events */
+(function enableDragging(){
+  let dragWin = null, startX=0, startY=0, startLeft=0, startTop=0;
+
+  document.addEventListener('pointerdown', (e)=>{
+    const bar = e.target.closest('.titlebar');
+    const win = e.target.closest('.window');
+    if (!bar || !win) return;
+    dragWin = win;
+    dragWin.setPointerCapture(e.pointerId);
+    startX = e.clientX; startY = e.clientY;
+    const rect = dragWin.getBoundingClientRect();
+    startLeft = rect.left; startTop = rect.top;
+    e.preventDefault();
+  });
+
+  document.addEventListener('pointermove', (e)=>{
+    if (!dragWin) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    let left = startLeft + dx;
+    let top  = startTop  + dy;
+
+    // keep some part visible (bounds)
+    const pad = 24; // allow titlebar to tuck slightly off-screen
+    const maxL = window.innerWidth - pad;
+    const maxT = window.innerHeight - pad;
+    left = Math.min(Math.max(left, - (dragWin.offsetWidth - pad)), maxL);
+    top  = Math.min(Math.max(top, 0), maxT);
+
+    dragWin.style.left = left + 'px';
+    dragWin.style.top  = top  + 'px';
+  });
+
+  document.addEventListener('pointerup', (e)=>{
+    if (dragWin){
+      try { dragWin.releasePointerCapture(e.pointerId); } catch{}
+      dragWin = null;
+    }
+  });
+})();
+
+/* Optional: keep textarea height linked on window resize (already flexed, but this helps on extreme sizes) */
+new ResizeObserver(entries=>{
+  for (const entry of entries){
+    const win = entry.target;
+    if (!win.classList.contains('window')) continue;
+    // nothing required; flex layout keeps it proportional
+  }
+}).observe(document.body);
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <div class="right">
     <h2>About</h2>
     <p>Welcome to 0nest's site.</p>

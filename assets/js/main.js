@@ -93,4 +93,3 @@ function removeshot2() {
         $(this).remove();
     });
 }
-

@@ -35,44 +35,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Floating Draggable Retro Boxes</title>
 <style>
-  :root{
-    --bg:#c0c0c0; --edge:#f0f0f0; --shadow:#7a7a7a; --white:#fff;
-  }
-  html,body{height:100%;margin:0;background:#9ca3af;font-family:system-ui,Segoe UI,Arial,sans-serif}
-  /* GENERIC FLOATING WINDOW */
-  .window{
-    position:fixed; /* key: not inside any element */
-    left: 10vw; top: 10vh; width: 360px; min-width:200px; min-height:120px;
-    background:var(--bg); border:1px solid var(--shadow);
-    box-shadow:inset -1px -1px 0 var(--edge), inset 1px 1px 0 var(--white), 0 6px 20px rgba(0,0,0,.25);
-    border-radius:3px; resize:both; overflow:hidden; display:flex; flex-direction:column;
-  }
-  .titlebar{
-    display:flex; justify-content:space-between; align-items:center;
-    background:linear-gradient(#1a3c91,#0b2a7c); color:#fff; padding:2px 6px; font-size:12px;
-    cursor:grab; user-select:none; touch-action:none; /* important for touch dragging */
-  }
-  .titlebar:active{cursor:grabbing}
-  .controls{display:flex; gap:4px}
-  .ctrl{
-    width:14px; height:14px; background:var(--bg); border:1px solid var(--shadow);
-    font-size:11px; line-height:12px; text-align:center; user-select:none;
-  }
-  .content{display:flex; flex-direction:column; gap:6px; padding:6px; flex:1; min-height:0}
-  .badge-strip{
-    display:flex; gap:4px; flex-wrap:wrap; background:#e5e7eb; border:1px solid var(--shadow); padding:4px; flex-shrink:0;
-  }
-  .badge-strip img{width:88px; height:31px; image-rendering:pixelated; object-fit:cover}
-  .copy-wrap{display:flex; flex-direction:column; flex:1; min-height:0}
-  textarea{
-    width:100%; flex:1; min-height:60px; resize:none; padding:6px;
-    font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px;
-    border:1px solid var(--shadow); box-sizing:border-box;
-  }
-  button{
-    align-self:flex-end; margin-top:6px; padding:4px 8px; font-size:12px; cursor:pointer;
-    border:1px solid var(--shadow); background:#dcdcdc;
-  }
+  
 </style>
 </head>
 <body>

@@ -1,135 +1,90 @@
+/* --- Base page styles (keep) --- */
 body {
-    font-family: Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #270056;
-    color: #000000;
+  font-family: Verdana, sans-serif;
+  margin: 0; padding: 0;
+  background: #270056;   /* choose this OR the html,body rule below */
+  color: #000000;
 }
+html, body {
+  /* If you prefer the system-ui + grey bg, keep these; otherwise delete this block */
+  /* background: #9ca3af; */
+  /* font-family: system-ui, Segoe UI, Arial, sans-serif; */
+  scrollbar-width: none;   /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer / Edge */
+  
+}
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+
 nav {
-    background: #07003b;
-    color: hsl(246, 96%, 10%);
-    padding: 10px;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
+  background: #07003b;
+  color: #cfd8ff;                 /* improved contrast */
+  padding: 10px;
+  display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; align-items: center;
 }
-nav a {
-    color: hsl(246, 96%, 10%);
-    text-decoration: none;
-}
+nav a { color: #cfd8ff; text-decoration: none; }
+
 main {
-    max-width: 960px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #fff;
-}
-footer {
-    text-align: center;
-    padding: 20px;
-    background: #97bd9e;
-    color: #fff;
+  max-width: 960px; margin: 20px auto; padding: 20px; background: #fff;
 }
 
-#navbar {
-  position: sticky;
-  top: 0;
-  overflow: hidden;
-  background-color: #333;
-}
+footer { text-align: center; padding: 20px; background: #97bd9e; color: #fff; }
 
-/* Navbar links */
-#navbar a {
-  display: block;
-  color: #000a29;
-  text-align: center;
-  padding: 14px;
-  text-decoration: none;
-}
+#navbar { position: sticky; top: 0; overflow: hidden; background-color: #333; }
+#navbar a { display: block; color: #e6ecff; text-align: center; padding: 14px; text-decoration: none; }
 
-/* Page content */
-.content {
-  padding: 16px;
-}
+* { box-sizing: border-box; }
 
-/* Responsive three-column layout */
-* {
-  box-sizing: border-box;
-}
-
-.menu {
-  float: left;
-  width: 20%;
-  text-align: center;
-}
-
-.menu a {
-  background-color: #002b36;
-  padding: 8px;
-  margin-top: 7px;
-  display: block;
-  width: 100%;
-  color: black;
-}
-
-.main {
-  float: left;
-  width: 60%;
-  padding: 0 20px;
-}
-
-.right {
-  background-color: #e5e5e5;
-  float: left;
-  width: 20%;
-  padding: 15px;
-  margin-top: 7px;
-  text-align: center;
-}
+/* 3-column layout – rename to avoid main/element collision */
+.menu { float: left; width: 20%; text-align: center; }
+.menu a { background-color: #002b36; padding: 8px; margin-top: 7px; display: block; width: 100%; color: #fff; }
+.col-main { float: left; width: 60%; padding: 0 20px; }     /* was .main */
+.right { background-color: #e5e5e5; float: left; width: 20%; padding: 15px; margin-top: 7px; text-align: center; }
 
 @media only screen and (max-width: 620px) {
-  .menu, .main, .right {
-    width: 100%;
-  }
+  .menu, .col-main, .right { width: 100%; }
 }
 
+/* --- Namespaced floating window UI --- */
+:root {
+  --bg:#c0c0c0; --edge:#f0f0f0; --shadow:#7a7a7a; --white:#fff;
+}
+/* do NOT override html,body again to avoid conflicts */
 
-:root{
-    --bg:#c0c0c0; --edge:#f0f0f0; --shadow:#7a7a7a; --white:#fff;
-  }
-  html,body{height:100%;margin:0;background:#9ca3af;font-family:system-ui,Segoe UI,Arial,sans-serif}
-  /* GENERIC FLOATING WINDOW */
-  .window{
-    position:fixed; /* key: not inside any element */
-    left: 10vw; top: 10vh; width: 360px; min-width:200px; min-height:120px;
-    background:var(--bg); border:1px solid var(--shadow);
-    box-shadow:inset -1px -1px 0 var(--edge), inset 1px 1px 0 var(--white), 0 6px 20px rgba(0,0,0,.25);
-    border-radius:3px; resize:both; overflow:hidden; display:flex; flex-direction:column;
-  }
-  .titlebar{
-    display:flex; justify-content:space-between; align-items:center;
-    background:linear-gradient(#1a3c91,#0b2a7c); color:#fff; padding:2px 6px; font-size:12px;
-    cursor:grab; user-select:none; touch-action:none; /* important for touch dragging */
-  }
-  .titlebar:active{cursor:grabbing}
-  .controls{display:flex; gap:4px}
-  .ctrl{
-    width:14px; height:14px; background:var(--bg); border:1px solid var(--shadow);
-    font-size:11px; line-height:12px; text-align:center; user-select:none;
-  }
-  .content{display:flex; flex-direction:column; gap:6px; padding:6px; flex:1; min-height:0}
-  .badge-strip{
-    display:flex; gap:4px; flex-wrap:wrap; background:#e5e7eb; border:1px solid var(--shadow); padding:2px; flex-shrink:0;
-  }
-  .badge-strip img{width:88px; height:31px; image-rendering:pixelated; object-fit:cover}
-  .copy-wrap{display:flex; flex-direction:column; flex:1; min-height:0}
-  textarea{
-    width:100%; flex:1; min-height:60px; resize:none; padding:6px;
-    font-family:ui-monospace,Menlo,Consolas,monospace; font-size:12px;
-    border:1px solid var(--shadow); box-sizing:border-box;
-  }
-  button{
-    align-self:flex-end; margin-top:6px; padding:4px 8px; font-size:12px; cursor:pointer;
-    border:1px solid var(--shadow); background:#dcdcdc;
-  }
+/* Generic floating window */
+.window {
+  position: fixed; left: 10vw; top: 10vh; width: 360px; min-width:200px; min-height:120px;
+  background: var(--bg); border: 1px solid var(--shadow);
+  box-shadow: inset -1px -1px 0 var(--edge), inset 1px 1px 0 var(--white), 0 6px 20px rgba(0,0,0,.25);
+  border-radius: 3px; resize: both; overflow: hidden; display: flex; flex-direction: column;
+}
+.window .titlebar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: linear-gradient(#1a3c91,#0b2a7c); color: #fff; padding: 2px 6px; font-size: 12px;
+  cursor: grab; user-select: none; touch-action: none;
+}
+.window .titlebar:active { cursor: grabbing; }
+.window .controls { display: flex; gap: 4px; }
+.window .ctrl {
+  width:14px; height:14px; background:var(--bg); border:1px solid var(--shadow);
+  font-size:11px; line-height:12px; text-align:center; user-select:none;
+}
+.window .content {      /* scoped! avoids clashing with page .content */
+  display:flex; flex-direction:column; gap:6px; padding:6px; flex:1; min-height:0;
+}
+.window .badge-strip {
+  display:flex; gap:4px; flex-wrap:wrap; background:#e5e7eb; border:1px solid var(--shadow); padding:2px; flex-shrink:0;
+}
+.window .badge-strip img { width:88px; height:31px; image-rendering:pixelated; object-fit:cover; }
+.window .copy-wrap { display:flex; flex-direction:column; flex:1; min-height:0; }
+.window textarea {
+  width:100%; flex:1; min-height:60px; resize:none; padding:6px;
+  font-family: ui-monospace,Menlo,Consolas,monospace; font-size:12px;
+  border:1px solid var(--shadow); box-sizing:border-box;
+}
+.window button {
+  align-self:flex-end; margin-top:6px; padding:4px 8px; font-size:12px; cursor:pointer;
+  border:1px solid var(--shadow); background:#dcdcdc;
+}

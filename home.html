@@ -1,203 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>0 N E S T</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>0 N E S T</title>
 
-    <style>
-    :root {
-      --accent: #f08c00;
-      --bg: #000000;
-      --text: white;
-      --highlight: #00FF80;
-    }
+  <!-- Your external stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css" />
 
-    html, body {
-      margin: 0;
-      height: 100%;
-      background-image:url('stars---background-pixilart.png'); 
-      color: var(--text);
-      font-family: "Courier", monospace;
-      cursor: crosshair;
-      overflow-x: hidden;
-    }
+  <style>
 
-    .wrapper {
-      max-width: 1024px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(14, [col-start] 1fr);
-      grid-template-rows: auto 1fr auto;
-      grid-gap: 15px;
-      padding: 10px;
-      min-height: 100vh;
-    }
+    
+  :root {
+    --accent: #f08c00;
+    --bg: #000000;
+    --text: #ffffff;
+    --highlight: #00FF80;
+  }
 
-    .wrapper > * {
-      background-color: #000000D9;
-      border: 2px outset var(--accent);
-      border-radius: 5px;
-      padding: 10px;
-    }
+  html, body {
+  margin: 0;
+  font-family: "Courier", monospace;
+  cursor: crosshair;
+  overflow-x: hidden;
 
-    header {
-      grid-column: col-start / span 14;
-      text-align: center;
-      padding-top: 6px;
-    }
+  /* base color */
+  background-color: #000;
 
-      .main-nav {
-      grid-column: col-start / span 4;
-      grid-row: 2;
-      display: flex;
-      flex-direction: column;
-      height: fit-content;
-    }
+  /* stack your image on top of the gradient */
+  background-image: 
+    url("assets/img/starTest.gif"),
+    linear-gradient(
+      181deg,
+      rgba(0, 0, 0, 1) 45%,
+      rgba(26, 26, 77, 1) 80%,
+      rgba(74, 55, 115, 1) 95%,
+      rgba(96, 37, 105, 1) 99%
+    );
 
-    .main-content {
-      grid-column: col-start 5 / span 6;
-      display: flex;
-      flex-direction: column;
-      height: fit-content;
-    }
+  /* control how each layer behaves */
+  background-repeat: repeat, no-repeat;     /* first image repeats, gradient doesn’t */
+  background-size: auto, cover;             /* star image repeats naturally, gradient covers full screen */
+  background-position: top center, center;  /* stars start at top, gradient centered */
+}
 
-    .main-side {
-      grid-column: col-start 11 / span 4;
-      display: flex;
-      flex-direction: column;
-      height: fit-content;
-    }
 
-    footer {
-      grid-column: col-start / span 14;
-      text-align: center;
-    }
+  * { box-sizing: border-box; }
 
-    a {
-      color: var(--highlight);
-      text-decoration: none;
-    }
+  /* GRID WRAPPER */
+  .wrapper {
+    max-width: 1024px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
 
-    a:hover {
-      background-size: 4px 50px;
-      color: rgb(68, 47, 47);
-      cursor: crosshair;
-    }
-
-    @media (max-width: 768px) {
-      .main-nav, .main-side {
-        grid-column: col-start / span 7;
-      }
-
-      .main-nav {
-        order: 1;
-      }
-
-      .main-side {
-        order: 2;
-      }
-
-      .main-content {
-        grid-column: col-start / span 14;
-        order: 0;
-      }
-    }
-  </style>
   
+
+
+
+    display: grid;
+    grid-template-columns: repeat(14, [col-start] 1fr);
+    /* header (auto), TWO equal content rows (1fr each), footer (auto) */
+    grid-template-rows: auto minmax(0,1fr) minmax(0,1fr) auto; /* added one more row for side-chat */
+    gap: 15px;
+    font-size: 1.2em;
+  }
+
+  /* BOX CHROME */
+  .wrapper > * {
+    border: 2px outset var(--accent);
+    background-color: #000000D9;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+
+header, footer { grid-column: col-start / span 14; }
+
+
+  /* center column */
+.main-img      { grid-column: col-start 4 / span 8; grid-row: 2 / span 2;  }  /* top-half */
+.main-content  { grid-column: col-start 4 / span 8; grid-row: 4; }  /* bottom-half */
+
+/* left column */
+.main-nav      { grid-column: col-start / span 3;   grid-row: 2; }
+.main-side     { grid-column: col-start / span 3;   grid-row: 3; }  /* moved to nav2 spot */
+.nav2          { grid-column: col-start / span 3;   grid-row: 4; }  /* optional: move down */
+/* or remove .nav2 entirely if you don’t need it */
+
+/* right column */
+.jukebox       { grid-column: col-start 12 / span 3; grid-row: 2; } /* where main-side was */
+.updateboard   { grid-column: col-start 12 / span 3; grid-row: 3; } /* right under jukebox */
+
+/* right column only if you still keep side-chat; park it below to avoid overlap */
+.side-chat     { grid-column: col-start 12 / span 3; grid-row: 3; }
+
+
+
+/* Right column container replacing jukebox/updateboard individual grid rules */
+.right-stack {
+  grid-column: col-start 12 / span 3; 
+  grid-row: 2 ;              
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 10px;
+  
+}
+
+
+.right-stack .jukebox,
+.right-stack .updateboard {
+  flex: 1;
+  border: 2px outset var(--accent);
+  background-color: #000000D9;
+  border-radius: 5px;
+  padding: 10px;
+  overflow: auto;
+}
+
+
+  .main-content h2,
+  .main-side h2,
+  .nav2 h2 { margin-top: 0; }
+
+  .menu a { display: block; margin-top: 14px; }
+
+  a { color: var(--highlight); text-decoration: none; }
+  a:hover { color: rgb(68, 47, 47); cursor: crosshair; }
+
+  nav ul { list-style: none; margin: 0; padding: 0; }
+
+  /* Make nav2 grow to fill any extra space if its content is short */
+  .nav2 { min-height: 0; }
+  .nav2 .title { flex: 1; } /* placeholder grows to push content if you add more later */
+
+  /* ------- Responsive: stack to single column ------- */
+  @media (max-width: 900px) {
+    .wrapper {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto auto; /* simple stacking */
+    }
+  .header,
+  .main-nav,
+  .main-side,
+  .main-img,
+  .main-content,
+  .jukebox,
+  .updateboard,
+  .side-chat,
+  .nav2,
+  footer { grid-column: 1 / -1; }
+
+    .main-content,
+    .main-side { grid-row: auto; } /* no spanning on mobile */
+  }
+
+  
+
+
+
+</style>
 
 </head>
 
-<div class="window" style="left:1vw;top:20vh" >
-  
-  <div class="titlebar">
-    <div>my Web badge :3</div>
-    <div class="controls" aria-hidden="true">
-      <div class="ctrl" data-minimize>−</div>
-      <div class="ctrl" data-center>□</div>
-      <div class="ctrl" data-close>×</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="badge-strip">
-      <a href="https://onest-shin.github.io/" target="_blank">
-        <img src="https://files.catbox.moe/01m2cs.gif" alt="badge">
-      </a>
-    </div>
-    <div class="copy-wrap">
-      <textarea id="code1" spellcheck="false">&lt;a href="https://onest-shin.github.io/" target="_blank"&gt;&lt;img src="https://files.catbox.moe/01m2cs.gif" alt="ONEST 88x31"&gt;&lt;/a&gt;</textarea>
-      <button data-copy="#code1">Copy</button>
-    </div>
-  </div>
-</div> 
-
-
 <body>
- 
-  <div class="wrapper">
-    
-    <header class="main-head">
-      <a href="#" style="max-width: 100%;">0nest's website</a>
-    </header>
 
-    <nav class="main-nav">
-      <div><img src="https://afdj.com.au/wp-content/uploads/2021/02/shark-3197585_1280.jpg" style="width:100%;"></div>
-      <div class="menu">
-        <a href="/home.html">Home</a><br>
-        <a href="/projects/index.html">Projects</a><br>
-        <a href="/gallery/index.html">Gallery</a><br>
-        <a href="/journal/index.html">Journal</a><br>
-        <a href="/about.html">About</a><br>
-        <a href="/contact.html">Contact</a><br>
+  <!-- MOVED INSIDE BODY -->
+  <div class="window" style="left:1vw; top:20vh;">
+    <div class="titlebar">
+      <div>my Web badge :3</div>
+      <div class="controls" aria-hidden="true">
+        <div class="ctrl" data-minimize>−</div>
+        <div class="ctrl" data-center>□</div>
+        <div class="ctrl" data-close>×</div>
       </div>
-    </nav>
+    </div>
+    <div class="content">
+      <div class="badge-strip">
+        <a href="https://onest-shin.github.io/" target="_blank">
+          <img src="https://files.catbox.moe/01m2cs.gif" alt="badge">
+        </a>
+      </div>
+      <div class="copy-wrap">
+        <textarea id="code1" spellcheck="false">&lt;a href="https://onest-shin.github.io/" target="_blank"&gt;&lt;img src="https://files.catbox.moe/01m2cs.gif" alt="ONEST 88x31"&gt;&lt;/a&gt;</textarea>
+        <button data-copy="#code1">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapper">
+
+    <header class="main-head">
+      <a href="#">0nest's website </a>
+    </header>
 
     <main class="main-content">
       <h2>Welcome</h2>
-      <p>Welcome to 0nest's site. It's still getting built so this will be used as a checklist of things I need/want to build:<br>
-      1. music room<br>
-      2. link to other websites<br>
-      3. cool front page<br>
-      4. gif background</p>
-      <iframe  height="532" width="345" frameborder="0" scrolling="no" ></iframe> 
+      <p>
+        Welcome to 0nest's site. It's still getting built so this will be used as a checklist of things I need/want to build:<br>
+        1. music room<br>
+        2. link to other websites<br>
+        3. cool front page<br>
+        4. gif background
+      </p>
+      <!-- Removed empty iframe (no src/height use) -->
     </main>
+
+    <nav class="main-nav">
+      <div>
+        <img src="https://afdj.com.au/wp-content/uploads/2021/02/shark-3197585_1280.jpg" style="width:100%;" alt="shark">
+      </div>
+      <div class="menu">
+        <a href="/home.html">Home</a>
+        <a href="/projects/index.html">Projects</a>
+        <a href="/gallery/index.html">Gallery</a>
+        <a href="/journal/index.html">Journal</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </nav>
 
     <nav class="main-side">
       <h2>Inspo</h2>
+
       <a href="https://vertpush.neocities.org/">
-        <img style="width: 88px; height: 31px;" src="https://vertpush.neocities.org/buttons/vertpushbutton2.gif" />
+        <img style="width: 88px; height: 31px;" src="https://vertpush.neocities.org/buttons/vertpushbutton2.gif" alt="vertpush button"/>
       </a>
       
+      <h3>EXTRAS</h3>
 
-
-
-      <p>Resize the browser window to see the responsive effect.</p>
-      <h2>EXTRAS</h2>
       <a href="#">» Gallery</a><br>
       <a href="#">» Web Tools</a><br>
       <a href="#">» Resources</a><br>
-      <iframe src="https://www3.cbox.ws/box/?boxid=3547828&boxtag=wdF9if" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
-    
-        
-
-
+      
     </nav>
 
-    <nav class="nav2"> 
+  <nav class="main-img">
+  <h3>test image place</h3>
+</nav>
+
+
+    <section class="side-chat">
+      <h3>temp visitors book</h3>
+  <iframe src="https://www3.cbox.ws/box/?boxid=3547828&boxtag=wdF9if"
+          width="100%" height="450"
+          allowtransparency="yes" allow="autoplay"
+          frameborder="0" marginheight="0" marginwidth="0"
+          scrolling="auto"></iframe>
+</section>
+
+  <div class="right-stack">
+  <section class="jukebox">
+    <h3>Jukebox</h3>
+    <p>Music player area.</p>
+  </section>
+
+  <section class="updateboard">
+    <h3>Update Board</h3>
+    <p>News and changelog.</p>
+  </section>
+</div>
+
+
+    <nav class="nav2">
+      <h2>Inspo</h2>
+      <div class="title"></div>
     </nav>
-
-
-   
 
     <footer class="box footer">
       <div style="background-color:#205274;text-align:center;padding:10px;margin-top:7px;">© 2024 0nest</div>
     </footer>
+
   </div>
-</div>
 
-
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="assets/js/main.js"></script>
+  <!-- Keep these if main.js uses jQuery or controls the .window -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>

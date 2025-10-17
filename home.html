@@ -13,9 +13,9 @@
     
   :root {
     --accent: #f08c00;
-    --bg: #000000;
+    --bg: #928e8e;
     --text: #ffffff;
-    --highlight: #00FF80;
+    --highlight: hsl(93, 100%, 89%);
   }
 
   html, body {
@@ -53,7 +53,7 @@
     margin: 0 auto;
     position: relative;
     z-index: 5;
-
+color: var(--text);    
   
 
 
@@ -72,6 +72,7 @@
     background-color: #000000D9;
     border-radius: 5px;
     padding: 10px;
+    color: var(--text);    
   }
 
 
@@ -115,7 +116,7 @@ header, footer { grid-column: col-start / span 14; }
   border: 2px outset var(--accent);
   background-color: #000000D9;
   border-radius: 5px;
-  padding: 10px;
+  padding: 5px;
   overflow: auto;
 }
 
@@ -157,8 +158,22 @@ header, footer { grid-column: col-start / span 14; }
   }
 
   
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
 
+.main-head {
+  position: relative; /* now the positioning context */
+}
 
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 </style>
 <meta name="google-site-verification" content="joak3YE0util4l_js6SPTizzo8d6iFstwwVkUFR7_Cg" />
@@ -189,11 +204,20 @@ header, footer { grid-column: col-start / span 14; }
     </div>
   </div>
 
-  <div class="wrapper">
+<div class="wrapper" >
 
-    <header class="main-head">
-      <a href="#">0nest's website </a>
-    </header>
+  <header class="main-head" >  
+        <div class="class="container>
+            <img src="assets\img\DSC_0044.png" width="1000" height="150">
+          <div class="centered"><a href="#"> 
+            <h1 style="font-family: Arial,; font-size:40px; text-align: center;"> onest</h1></a>
+          </div>
+        </div>
+  </header>
+
+
+
+
 
     <main class="main-content">
       <h2>Welcome</h2>
@@ -238,7 +262,7 @@ header, footer { grid-column: col-start / span 14; }
 
   <nav class="main-img">
   <h3>test image place</h3>
-</nav>
+  </nav>
 
 
     <section class="side-chat">
@@ -248,19 +272,21 @@ header, footer { grid-column: col-start / span 14; }
           allowtransparency="yes" allow="autoplay"
           frameborder="0" marginheight="0" marginwidth="0"
           scrolling="auto"></iframe>
-</section>
+  </section>
 
   <div class="right-stack">
   <section class="jukebox">
-    <h3>Jukebox</h3>
-    <p>Music player area.</p>
+    
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6nMMMloeKI5z0RzZxuKvG8?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </section>
 
   <section class="updateboard">
-    <h3>Update Board</h3>
-    <p>News and changelog.</p>
+    <h4>Update bored </h4>
+    <p style="font-size: 11px;" > »10/17/25 <br> need to clean up the nav box <br> acutally add info and to the mian box <br> work on web badge box<br> bruh</p>
+
+    
   </section>
-</div>
+  </div>
 
 
     <nav class="nav2">
@@ -272,7 +298,7 @@ header, footer { grid-column: col-start / span 14; }
       <div style="background-color:#205274;text-align:center;padding:10px;margin-top:7px;">© 2024 0nest</div>
     </footer>
 
-  </div>
+</div>
 
   <!-- Keep these if main.js uses jQuery or controls the .window -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

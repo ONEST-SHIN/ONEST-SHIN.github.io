@@ -93,3 +93,64 @@ function removeshot2() {
         $(this).remove();
     });
 }
+(function () {
+  function makeDraggable(win) {
+    const handle = win.querySelector('.titlebar') || win;
+    let startX = 0, startY = 0, startLeft = 0, startTop = 0, dragging = false;
+
+    // Ensure we have pixel positions to write back to
+    const cs = getComputedStyle(win);
+    if (cs.position === 'static') win.style.position = 'fixed'; // your CSS already uses fixed
+    if (!cs.left || cs.left === 'auto')  win.style.left = win.getBoundingClientRect().left + 'px';
+    if (!cs.top  || cs.top  === 'auto')  win.style.top  = win.getBoundingClientRect().top  + 'px';
+
+    function onDown(e) {
+      // Ignore clicks on the control buttons so they can be clicked without dragging
+      if (e.target.closest('.controls')) return;
+
+      e.preventDefault();
+      const rect = win.getBoundingClientRect();
+      startLeft = rect.left;   // fixed => viewport coords
+      startTop  = rect.top;
+      startX = e.clientX;
+      startY = e.clientY;
+      dragging = true;
+      handle.setPointerCapture?.(e.pointerId);
+      win.style.willChange = 'left, top';
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      let nx = startLeft + dx;
+      let ny = startTop  + dy;
+
+      // Constrain to viewport (optional)
+      const vw = document.documentElement.clientWidth;
+      const vh = document.documentElement.clientHeight;
+      const maxX = vw - win.offsetWidth;
+      const maxY = vh - win.offsetHeight;
+      nx = Math.min(Math.max(0, nx), Math.max(0, maxX));
+      ny = Math.min(Math.max(0, ny), Math.max(0, maxY));
+
+      win.style.left = nx + 'px';
+      win.style.top  = ny + 'px';
+    }
+
+    function onUp(e) {
+      dragging = false;
+      win.style.willChange = '';
+      try { handle.releasePointerCapture(e.pointerId); } catch (_) {}
+    }
+
+    // Pointer events = mouse + touch
+    handle.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  }
+
+  // Activate for all .window elements
+  document.querySelectorAll('.window').forEach(makeDraggable);
+})();

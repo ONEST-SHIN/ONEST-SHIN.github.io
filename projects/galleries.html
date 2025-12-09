@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>galleries- 0nest</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+<style>
+
+body {
+  background: #000;
+  color: #00ff80;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.crt {
+  width: 90%;
+  max-width: 800px;
+  background: radial-gradient(ellipse at center, rgba(0,255,0,0.08) 0%, rgba(0,0,0,1) 80%);
+  border: 2px solid #0f0;
+  box-shadow:
+    0 0 20px #00ff80,
+    inset 0 0 10px rgba(0,255,0,0.3);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* CRT scanline + glow effects */
+.crt::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,0,0.05) 0px,
+    rgba(0,255,0,0.05) 1px,
+    transparent 2px,
+    transparent 3px
+  );
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.terminal {
+  border: 1px solid #00ff80;
+  padding: 15px;
+  text-shadow: 0 0 8px rgba(0,255,128,0.6);
+  position: relative;
+}
+
+.header {
+  border-bottom: 1px solid #00ff80;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+.folders {
+  float: left;
+  width: 25%;
+  border-right: 1px solid #00ff80;
+  padding-right: 10px;
+}
+
+.folder {
+  border: 1px solid #00ff80;
+  margin: 5px 0;
+  padding: 4px;
+}
+
+.message {
+  margin-left: 30%;
+  padding-left: 15px;
+  border-left: 1px solid #00ff80;
+}
+
+.title {
+  border: 1px solid #00ff80;
+  padding: 3px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  font-size: 0.8em;
+  text-align: center;
+  color: #0f0;
+  text-shadow: 0 0 6px rgba(0,255,0,0.6);
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 0.99; }
+  20%, 24%, 55% { opacity: 0.4; }
+}
+
+.crt {
+  animation: flicker 2s infinite;
+}
+
+.crt {
+  transform: perspective(800px) rotateX(1deg);
+}
+
+/* turn the warp on/off here */
+.crt .terminal {
+  filter: url(#crt-bulge);
+}
+
+/* tweak strength */
+@supports (filter: url(#x)) {
+  /* optional helper class to quickly tune */
+  .warp-strong { filter: url(#crt-bulge); }
+}
+
+</style>
+
+
+
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+<div style="background-color:#e5e5e5;padding:15px;text-align:center;">
+  <h1>0 N E S T</h1>
+</div>
+
+<div style="overflow:auto">
+  <div class="menu">
+    <a href="/home.html">Home</a>
+    <a href="/projects/index.html">Projects</a>
+    <a href="/gallery/index.html">Gallery</a>
+    <a href="/journal/index.html">Journal</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+
+ 
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="../assets/js/main.js"></script>
+
+<div class="crt">
+    <div class="terminal">
+      <div class="header">PERSONAL TERMINAL</div>
+      <div class="folders">
+        <p>FOLDERS</p>
+        <div class="folder">PERSONAL</div>
+        <div class="folder">SHARED</div>
+        <div class="folder">UTILITY</div>
+        <div class="folder">PERSONAL</div>
+      </div>
+
+      <div class="message">
+        <div class="title">This is a shared message</div>
+        <p>
+          What is the shared folder for? Who knows! But it's in the screenshots and so we're using it.<br><br>
+          This is just going to be a really long-winded string literal that allows me to test such things as text wrapping, and scrolling.<br><br>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus posuere libero at nulla dignissim porta.
+        </p>
+      </div>
+
+      <div class="footer">
+        UP, DOWN: select folder | LEFT, RIGHT: scroll | q: exit
+      </div>
+    </div>
+  </div>
+  <svg width="0" height="0" style="position:absolute">
+  <!-- Displacement map for barrel (bulge) distortion -->
+  <defs>
+    <filter id="crt-bulge" x="-50%" y="-50%" width="200%" height="200%">
+      <!-- Build a red/green field that pushes pixels outward from center -->
+      <feImage result="map" preserveAspectRatio="none"
+        x="0" y="0" width="100%" height="100%"
+        xlink:href="data:image/svg+xml;utf8,
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+            <defs>
+              <!-- radial field from center; 0.5 = no move -->
+              <radialGradient id='r' cx='50%' cy='50%' r='70%'>
+                <stop offset='0'  stop-color='rgb(128,128,128)'/>
+                <stop offset='1'  stop-color='rgb(255,255,255)'/>
+              </radialGradient>
+              <linearGradient id='gx' x1='0%' y1='0%' x2='100%' y2='0%'>
+                <stop offset='0' stop-color='rgb(0,0,0)'/>
+                <stop offset='50%' stop-color='rgb(128,128,128)'/>
+                <stop offset='100%' stop-color='rgb(255,255,255)'/>
+              </linearGradient>
+              <linearGradient id='gy' x1='0%' y1='0%' x2='0%' y2='100%'>
+                <stop offset='0' stop-color='rgb(0,0,0)'/>
+                <stop offset='50%' stop-color='rgb(128,128,128)'/>
+                <stop offset='100%' stop-color='rgb(255,255,255)'/>
+              </linearGradient>
+            </defs>
+            <!-- Combine X and Y channels with a soft radial mask -->
+            <rect width='100' height='100' fill='url(%23gx)'/>
+            <rect width='100' height='100' fill='url(%23gy)' fill-opacity='1' style='mix-blend-mode:screen'/>
+            <rect width='100' height='100' fill='url(%23r)' style='mix-blend-mode:multiply'/>
+          </svg>" />
+      <!-- Displace source with R=horizontal, G=vertical -->
+      <feDisplacementMap in="SourceGraphic" in2="map"
+        scale="28" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+</body>
+</html>

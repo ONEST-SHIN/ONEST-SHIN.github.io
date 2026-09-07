@@ -10,6 +10,7 @@
 
   <style>
 
+
     
   :root {
     --accent: #77a77a;
@@ -49,7 +50,7 @@
 
   /* GRID WRAPPER */
   .wrapper {
-    max-width: 1024px;
+    max-width: 1500px;
     margin: 0 auto;
     position: relative;
     z-index: 5;
@@ -59,7 +60,7 @@ color: var(--text);
 
 
     display: grid;
-    grid-template-columns: repeat(14, [col-start] 1fr);
+    grid-template-columns: repeat(16, [col-start] 1fr);
     /* header (auto), TWO equal content rows (1fr each), footer (auto) */
     grid-template-rows: auto minmax(0,1fr) minmax(0,1fr) auto; /* added one more row for side-chat */
     gap: 15px;
@@ -75,43 +76,38 @@ color: var(--text);
     color: var(--text);    
   }
 
+  
 
-header, footer { grid-column: col-start / span 14; }
+header, footer { grid-column: col-start / span 20; }
 
 
   /* center column */
-.main-img      { grid-column: col-start 4 / span 8; grid-row: 2 / span 2;   }  /* top-half */
-.main-content  { grid-column: col-start 4 / span 8; grid-row: 4; }  /* bottom-half */
+.main-img      { grid-column: col-start 5 / span 8; grid-row: 2 / span 2;   }  /* top-half */
+.main-content  { grid-column: col-start 5 / span 8; grid-row: 4; }  /* bottom-half */
 
 /* left column */
-.main-nav      { grid-column: col-start / span 3;   grid-row: 2; }
-.main-side     { grid-column: col-start / span 3;   grid-row: 3; }  /* moved to nav2 spot */
-.nav2          { grid-column: col-start / span 3;   grid-row: 4; }  /* optional: move down */
+.main-nav      { grid-column: col-start 1/ span 4;   grid-row: 2 / span 2; } 
+.main-side     { grid-column: col-start 1/ span 4;   grid-row: 4; }  /* moved to nav2 spot */
+.nav2          { grid-column: col-start 1/ span 20;   grid-row: 5; }  /* optional: move down */
 /* or remove .nav2 entirely if you don’t need it */
 
-/* right column */
-.jukebox       { grid-column: col-start 12 / span 3; grid-row: 2; } /* where main-side was */
-.updateboard   { grid-column: col-start 12 / span 3; grid-row: 3; } /* right under jukebox */
-
 /* right column only if you still keep side-chat; park it below to avoid overlap */
-.side-chat     { grid-column: col-start 12 / span 3; grid-row: 3; }
-
 
 
 /* Right column container replacing jukebox/updateboard individual grid rules */
-.right-stack {
-  grid-column: col-start 12 / span 3; 
-  grid-row: 2 ;              
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  gap: 10px;
-  
-}
+.right-stack { grid-column: col-start 13 / span 8; grid-row: 2 /span 3  ;display: flex; flex-direction: column;  height: 100%; gap: 10px;}
 
 
-.right-stack .jukebox,
-.right-stack .updateboard {
+/* inside right column */
+.updateboard   { grid-column: col-start 12 / span 2; grid-row: 2; } 
+.jukebox       { grid-column: col-start 12 / span 3; grid-row: 3; } 
+.side-chat     { grid-column: col-start 16 / span 4; grid-row: 4; }
+
+
+
+.right-stack .jukebox, .right-stack .updateboard, .right-stack .side-chat  
+
+{
   flex: 1;
   border: 2px outset var(--accent);
   background-color: #000000D9;
@@ -147,8 +143,8 @@ header, footer { grid-column: col-start / span 14; }
   .main-side,
   .main-img,
   .main-content,
-  .jukebox,
   .updateboard,
+  .jukebox,
   .side-chat,
   .nav2,
   footer { grid-column: 1 / -1; }
@@ -175,34 +171,115 @@ header, footer { grid-column: col-start / span 14; }
   transform: translate(-50%, -50%);
 }
 
+.window {
+    position: fixed;
+    z-index: 1000;
+    isolation: isolate;
+    width: 220px;
+    background: #07021c89;
+    border: 2px solid #444;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+    font-size: 13px;
+  }
+  .titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #44444486;
+    color: #07021c48;
+    padding: 3px 6px;
+    cursor: move;
+    user-select: none;
+  }.controls { display: flex; gap: 4px; }
+  .ctrl {
+    width: 16px; height: 16px;
+    display: flex; align-items: center; justify-content: center;
+    background: #666;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1;
+  }
+  .ctrl:hover { background: #888; }
+ 
+  /* --- requested formatting, adapted from your snippet --- */
+  .border {
+    border: 1px solid #999;
+    padding: 8px;
+    text-align: center;
+    background: #0b061c89;
+  }
+  .border h2 { font-size: 14px; margin: 4px 0 8px; }
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .grid img { display: block; border: 1px solid #ccc; }
+  .border p { font-size: 12px; margin: 6px 0; }
+  .border small { font-size: 10px; color: #555; }
+ 
+  .copy-wrap { margin: 8px 0; }
+  .copy-wrap textarea {
+    width: 180px;
+    height: 56px;
+    line-break: anywhere;
+    font-size: 10px;
+    resize: none;
+  }
+  .copy-wrap button {
+    display: block;
+    margin: 4px auto 0;
+    font-size: 11px;
+    cursor: pointer;
+  }
+ 
+  .window.minimized .content { display: none; }
+
+
 </style>
 <meta name="google-site-verification" content="joak3YE0util4l_js6SPTizzo8d6iFstwwVkUFR7_Cg" />
 </head>
 
+
 <body>
 
-  <!-- MOVED INSIDE BODY -->
-  <div class="window" style="left:1vw; top:20vh;">
+  <div class="window" id="linkWindow" style="left:1vw; top:20vh;">
+ 
     <div class="titlebar">
-      <div>my Web badge </div>
+      <div>my web link</div>
       <div class="controls" aria-hidden="true">
         <div class="ctrl" data-minimize>−</div>
         <div class="ctrl" data-center>□</div>
         <div class="ctrl" data-close>×</div>
       </div>
     </div>
+ 
     <div class="content">
-      <div class="badge-strip">
-        <a href="https://onest-shin.github.io/" target="_blank">
-          <img src="https://files.catbox.moe/01m2cs.gif" alt="badge">
-        </a>
-      </div>
-      <div class="copy-wrap">
-        <textarea id="code1" spellcheck="false">&lt;a href="https://onest-shin.github.io/" target="_blank"&gt;&lt;img src="https://files.catbox.moe/01m2cs.gif" alt="ONEST 88x31"&gt;&lt;/a&gt;</textarea>
-        <button data-copy="#code1">Copy</button>
+      <div class="border" id="link">
+        <h2>link to me?</h2>
+        <div class="grid">
+          <a href="assets\img\badge.png/" download>
+            <img src="assets\img\badge.png" alt="ONEST 88x31" loading="lazy">
+          </a>
+        </div>
+        <p>pick the badge!<br>click to visit, or copy the code below.</p>
+ 
+        <div class="copy-wrap">
+          <textarea id="code1" spellcheck="false">&lt;a href="https://onest-shin.github.io/" target="_blank"&gt;&lt;img src="assets\img\DSC_0044.png" alt="ONEST 88x31"&gt;&lt;/a&gt;</textarea>
+          <button data-copy="#code1">copy</button>
+        </div>
+ 
+        <p><small><a href="https://en.wikipedia.org/wiki/Inline_linking" target="_blank">hotlinking</a> is allowed but not recommended.<br>please use <a href="https://www.w3.org/WAI/tutorials/images/functional/" target="_blank">alt text</a>!</small></p>
       </div>
     </div>
   </div>
+  
+
+
+  
+
 
 <div class="wrapper" >
 
@@ -276,6 +353,25 @@ A space to archive, explore, and rediscover my work</p>
   </nav>
 
 
+   
+
+  <div class="right-stack"> 
+    
+    <section class="updateboard">
+    <h4>Update bored </h4>
+    <p style="font-size: 11px;" > 
+      
+      »10/17/25 <br> need to clean up the nav box <br> acutally add info and to the mian box <br> work on web badge box<br> bruh<br> <br> 
+
+
+      »9/8/26 <br> cought up with what the problme is, with allthe ai things i was doing, there  is a lot of thinbgs to clean and re-learn. big things coming up on the loer of this build, probs moer in fo in the projects. <br> fixed the  webside badge and moved the tables ato fir a wider screen <br> for now i will not ry to make it accessable to phone users. 
+    </p>
+   </section>
+   
+    <section class="jukebox">
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6nMMMloeKI5z0RzZxuKvG8?utm_source=generator&theme=0&si=2e7a57315d734670" width="100%" height="600" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+   </section>
+
     <section class="side-chat">
       <h3>temp visitors book</h3>
   <iframe src="https://www3.cbox.ws/box/?boxid=3547828&boxtag=wdF9if"
@@ -283,23 +379,13 @@ A space to archive, explore, and rediscover my work</p>
           allowtransparency="yes" allow="autoplay"
           frameborder="0" marginheight="0" marginwidth="0"
           scrolling="auto"></iframe>
-  </section>
-
-  <div class="right-stack">
-  <section class="jukebox">
-    
-    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6nMMMloeKI5z0RzZxuKvG8?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-  </section>
-
-  <section class="updateboard">
-    <h4>Update bored </h4>
-    <p style="font-size: 11px;" > »10/17/25 <br> need to clean up the nav box <br> acutally add info and to the mian box <br> work on web badge box<br> bruh</p>
-  </section>
-
+  </section> 
 
   </div>
+
+
     <nav class="nav2">
-      <h2>Inspo</h2>
+      <h2>cool links</h2>
       <div class="title"></div>
     </nav>
     <footer class="box footer">

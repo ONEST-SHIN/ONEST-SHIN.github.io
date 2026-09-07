@@ -10,8 +10,6 @@
 
   <style>
 
-
-    
   :root {
     --accent: #77a77a;
     --bg: #928e8e;
@@ -20,51 +18,44 @@
   }
 
   html, body {
-  margin: 0;
-  font-family: "Courier", monospace;
-  cursor: crosshair;
-  overflow-x: hidden;
+    margin: 0;
+    font-family: "Courier", monospace;
+    cursor: crosshair;
+    overflow-x: hidden;
 
-  /* base color */
-  background-color: #000;
+    background-color: #000;
 
-  /* stack your image on top of the gradient */
-  background-image: 
-    url("assets/img/starTest.gif"),
-    linear-gradient(
-      181deg,
-      rgba(0, 0, 0, 1) 45%,
-      rgba(26, 26, 77, 1) 80%,
-      rgba(74, 55, 115, 1) 95%,
-      rgba(96, 37, 105, 1) 99%
-    );
+    background-image:
+      url("assets/img/starTest.gif"),
+      linear-gradient(
+        181deg,
+        rgba(0, 0, 0, 1) 45%,
+        rgba(26, 26, 77, 1) 80%,
+        rgba(74, 55, 115, 1) 95%,
+        rgba(96, 37, 105, 1) 99%
+      );
 
-  /* control how each layer behaves */
-  background-repeat: repeat, no-repeat;     /* first image repeats, gradient doesn’t */
-  background-size: auto, cover;             /* star image repeats naturally, gradient covers full screen */
-  background-position: top center, center;  /* stars start at top, gradient centered */
-}
-
+    background-repeat: repeat, no-repeat;
+    background-size: auto, cover;
+    background-position: top center, center;
+  }
 
   * { box-sizing: border-box; }
 
   /* GRID WRAPPER */
   .wrapper {
-    max-width: 1500px;
+    max-width: 1100px;
     margin: 0 auto;
-    position: relative;
+    position: relative;   /* FIX: "position: top" is not a valid value and did nothing.
+                              relative is what you want as a positioning context anyway. */
     z-index: 5;
-color: var(--text);    
-  
-
-
+    color: var(--text);
 
     display: grid;
     grid-template-columns: repeat(16, [col-start] 1fr);
-    /* header (auto), TWO equal content rows (1fr each), footer (auto) */
-    grid-template-rows: auto minmax(0,1fr) minmax(0,1fr) auto; /* added one more row for side-chat */
+    grid-template-rows: auto minmax(0,1fr) minmax(0,1fr) auto;
     gap: 15px;
-    font-size: 1.2em;
+    font-size: 0.9em;
   }
 
   /* BOX CHROME */
@@ -73,105 +64,94 @@ color: var(--text);
     background-color: #000000D9;
     border-radius: 5px;
     padding: 10px;
-    color: var(--text);    
+    color: var(--text);
+
+    /* THE FIX for the grid blowout:
+       Grid items default to min-width:auto, which means a track will never
+       shrink below the intrinsic minimum size of its content — and fixed
+       padding (like the 100px on .menu a) counts toward that minimum and
+       can't shrink. That forces the whole track wider than its fr share,
+       which is why .main-nav was pushing into .main-content.
+       min-width:0 tells the grid it's allowed to shrink the track below
+       that content minimum; any content that's still too wide will need
+       its own overflow handling (see .menu below) instead of blowing out
+       the grid. */
+    min-width: 0;
   }
 
-  
-
-header, footer { grid-column: col-start / span 20; }
-
+  header, footer { grid-column: col-start / span 20; }
 
   /* center column */
-.main-img      { grid-column: col-start 5 / span 8; grid-row: 2 / span 2;   }  /* top-half */
-.main-content  { grid-column: col-start 5 / span 8; grid-row: 4; }  /* bottom-half */
+  .main-img      { grid-column: col-start 5 / span 8; grid-row: 2 / span 2; }
+  .main-content  { grid-column: col-start 5 / span 8; grid-row: 4; }
 
-/* left column */
-.main-nav      { grid-column: col-start 1/ span 4;   grid-row: 2 / span 2; } 
-.main-side     { grid-column: col-start 1/ span 4;   grid-row: 4; }  /* moved to nav2 spot */
-.nav2          { grid-column: col-start 1/ span 20;   grid-row: 5; }  /* optional: move down */
-/* or remove .nav2 entirely if you don’t need it */
+  /* left column */
+  .main-nav      { grid-column: col-start 1 / span 4; grid-row: 2 / span 2; display: flex; flex-direction: column; justify-content: flex-start; }
+  .main-side     { grid-column: col-start 1 / span 4; grid-row: 4; }
 
-/* right column only if you still keep side-chat; park it below to avoid overlap */
+  /* bottom row */
+  .nav2          { grid-column: col-start 1 / span 20; grid-row: 5; }
 
+  /* right column container — this flexbox is what actually positions
+     jukebox/updateboard/side-chat now, so their old individual
+     grid-column/grid-row rules below are dead code and have been removed. */
+  .right-stack {
+    grid-column: col-start 13 / span 8;
+    grid-row: 2 / span 3;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+  }
 
-/* Right column container replacing jukebox/updateboard individual grid rules */
-.right-stack { grid-column: col-start 13 / span 8; grid-row: 2 /span 3  ;display: flex; flex-direction: column;  height: 100%; gap: 10px;}
-
-
-/* inside right column */
-.updateboard   { grid-column: col-start 12 / span 2; grid-row: 2; } 
-.jukebox       { grid-column: col-start 12 / span 3; grid-row: 3; } 
-.side-chat     { grid-column: col-start 16 / span 4; grid-row: 4; }
-
-
-
-.right-stack .jukebox, .right-stack .updateboard, .right-stack .side-chat  
-
-{
-  flex: 1;
-  border: 2px outset var(--accent);
-  background-color: #000000D9;
-  border-radius: 5px;
-  padding: 5px;
-  overflow: auto;
-}
-
+  .right-stack .jukebox,
+  .right-stack .updateboard,
+  .right-stack .side-chat {
+    flex: 1;
+    border: 2px outset var(--accent);
+    background-color: #000000D9;
+    border-radius: 5px;
+    padding: 5px;
+    overflow: auto;
+  }
 
   .main-content h2,
   .main-side h2,
   .nav2 h2 { margin-top: 0; }
-
-  .menu a { display: block; margin-top: 14px;  text-align:right ; }
 
   a { color: var(--highlight); text-decoration: none; }
   a:hover { color: rgb(68, 47, 47); cursor: crosshair; }
 
   nav ul { list-style: none; margin: 0; padding: 0; }
 
-  /* Make nav2 grow to fill any extra space if its content is short */
   .nav2 { min-height: 0; }
-  .nav2 .title { flex: 1; } /* placeholder grows to push content if you add more later */
+  .nav2 .title { flex: 1; }
 
   /* ------- Responsive: stack to single column ------- */
   @media (max-width: 900px) {
-    .wrapper {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto auto auto auto auto; /* simple stacking */
-    }
-  .header,
-  .main-nav,
-  .main-side,
-  .main-img,
-  .main-content,
-  .updateboard,
-  .jukebox,
-  .side-chat,
-  .nav2,
-  footer { grid-column: 1 / -1; }
-
-    .main-content,
-    .main-side { grid-row: auto; } /* no spanning on mobile */
+    .wrapper { grid-template-columns: 1fr; grid-template-rows: auto auto auto auto auto; }
+    .header, .main-nav, .main-side, .main-img, .main-content,
+    .updateboard, .jukebox, .side-chat, .nav2, footer { grid-column: 1 / -1; }
+    .main-content, .main-side { grid-row: auto; }
   }
 
-  
-.container {
-  position: relative;
-  text-align: center;
-  color: white;
-}
+  .container {
+    position: relative;
+    text-align: center;
+    color: white;
+  }
 
-.main-head {
-  position: relative; /* now the positioning context */
-}
+  .main-head { position: relative; }
+  .main-img {position: relative; }
 
-.centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
-.window {
+  .window {
     position: fixed;
     z-index: 1000;
     isolation: isolate;
@@ -190,7 +170,8 @@ header, footer { grid-column: col-start / span 20; }
     padding: 3px 6px;
     cursor: move;
     user-select: none;
-  }.controls { display: flex; gap: 4px; }
+  }
+  .controls { display: flex; gap: 4px; }
   .ctrl {
     width: 16px; height: 16px;
     display: flex; align-items: center; justify-content: center;
@@ -200,8 +181,7 @@ header, footer { grid-column: col-start / span 20; }
     line-height: 1;
   }
   .ctrl:hover { background: #888; }
- 
-  /* --- requested formatting, adapted from your snippet --- */
+
   .border {
     border: 1px solid #999;
     padding: 8px;
@@ -219,7 +199,7 @@ header, footer { grid-column: col-start / span 20; }
   .grid img { display: block; border: 1px solid #ccc; }
   .border p { font-size: 12px; margin: 6px 0; }
   .border small { font-size: 10px; color: #555; }
- 
+
   .copy-wrap { margin: 8px 0; }
   .copy-wrap textarea {
     width: 180px;
@@ -234,19 +214,64 @@ header, footer { grid-column: col-start / span 20; }
     font-size: 11px;
     cursor: pointer;
   }
- 
+
   .window.minimized .content { display: none; }
 
+  /* Your buttons keep the 100px padding you like. .menu handles the
+     overflow so oversized buttons scroll within the nav box instead of
+     stretching the grid track. */
+  .menu {
+    overflow-x: auto;
+    max-width: 100%;
+  }
 
-</style>
-<meta name="google-site-verification" content="joak3YE0util4l_js6SPTizzo8d6iFstwwVkUFR7_Cg" />
+  .menu a {
+    display: block;
+    padding: 10px 100px;
+    border: 1px solid #2a5c5c;
+    background: #0d2b2b;
+    color: #7fd8d8;
+    text-decoration: none;
+    font-family: monospace;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+
+  .menu a:hover {
+    background: #16403f;
+  }
+.tab-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.tab-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 90px;
+  border: 1px solid #2a5c5c;
+  background: #0d2b2b;
+  color: #7fd8d8;
+  font-family: monospace;
+  text-align: center;
+  cursor: crosshair;
+}
+
+.tab-btn:hover,
+.tab-btn.active {
+  background: #16403f;
+}
+  </style>
+  <meta name="google-site-verification" content="joak3YE0util4l_js6SPTizzo8d6iFstwwVkUFR7_Cg" />
 </head>
 
 
 <body>
 
   <div class="window" id="linkWindow" style="left:1vw; top:20vh;">
- 
+
     <div class="titlebar">
       <div>my web link</div>
       <div class="controls" aria-hidden="true">
@@ -255,46 +280,40 @@ header, footer { grid-column: col-start / span 20; }
         <div class="ctrl" data-close>×</div>
       </div>
     </div>
- 
+
     <div class="content">
       <div class="border" id="link">
         <h2>link to me?</h2>
         <div class="grid">
-          <a href="assets\img\badge.png/" download>
-            <img src="assets\img\badge.png" alt="ONEST 88x31" loading="lazy">
+          <a href="assets/img/badge.png" download>
+            <img src="assets/img/badge.png" alt="ONEST 88x31" loading="lazy">
           </a>
         </div>
         <p>pick the badge!<br>click to visit, or copy the code below.</p>
- 
+
         <div class="copy-wrap">
-          <textarea id="code1" spellcheck="false">&lt;a href="https://onest-shin.github.io/" target="_blank"&gt;&lt;img src="assets\img\DSC_0044.png" alt="ONEST 88x31"&gt;&lt;/a&gt;</textarea>
+          <textarea id="code1" spellcheck="false">&lt;a href="https://onest-shin.github.io/" target="_blank"&gt;&lt;img src="assets/img/DSC_0044.png" alt="ONEST 88x31"&gt;&lt;/a&gt;</textarea>
           <button data-copy="#code1">copy</button>
         </div>
- 
+
         <p><small><a href="https://en.wikipedia.org/wiki/Inline_linking" target="_blank">hotlinking</a> is allowed but not recommended.<br>please use <a href="https://www.w3.org/WAI/tutorials/images/functional/" target="_blank">alt text</a>!</small></p>
       </div>
     </div>
   </div>
-  
 
 
-  
+  <div class="wrapper">
 
-
-<div class="wrapper" >
-
-  <header class="main-head" >  
-        <div class="class="container>
-            <img src="assets\img\DSC_0044.png" width="1000" height="150">
-          <div class="centered"><a href="#"> 
-            <h1 style="font-family: Arial,; font-size:40px; text-align: center;"> onest</h1></a>
-          </div>
+    <header class="main-head">
+      <div class="container">
+        <img src="assets/img/DSC_0044.png" width="1000" height="150">
+        <div class="centered">
+          <a href="#">
+            <h1 style="font-family: Arial, sans-serif; font-size:40px; text-align: center;">onest</h1>
+          </a>
         </div>
-  </header>
-
-
-
-
+      </div>
+    </header>
 
     <main class="main-content">
       <h2>Welcome</h2>
@@ -305,94 +324,115 @@ header, footer { grid-column: col-start / span 20; }
         3. cool front page<br>
         4. gif background
       </p>
-      <!-- Removed empty iframe (no src/height use) -->
     </main>
 
-    <nav class="main-nav">
+    <nav class="main-nav" >
       <div>
-        <img src="https://afdj.com.au/wp-content/uploads/2021/02/shark-3197585_1280.jpg" style="width:100%;" alt="shark">
+        <img src="assets/img/2e69223eeb482c5224989ca3c40c735e.png" style="width:100%;" alt="faceimg">
       </div>
-      <div class="menu">
-        <a href="/home.html">Home</a>
-        <a href="/projects/index.html">Projects</a>
-        <a href="/gallery/index.html">Gallery</a>
-        <a href="/journal/index.html">Journal</a>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-      </div>
+
+      <h2 style="text-align:center;">check out my stuff</h2>
+
+      <h3> 
+        <a href="/home.html">>Home<br></a>
+        
+      
+
+     <div class="tab-group">
+    <button class="tab-btn active" data-tab="tab1">Tab 1</button>
+    <button class="tab-btn" data-tab="tab2">Tab 2</button>
+    <button class="tab-btn" data-tab="tab3">Tab 3</button>
+    </div>
+        <a href="/projects/index.html">>Projects<br></a><br>
+       <div class="tab-group">
+    <button class="tab-btn active" data-tab="tab1">Tab 1</button>
+    <button class="tab-btn" data-tab="tab2">Tab 2</button>
+    <button class="tab-btn" data-tab="tab3">Tab 3</button>
+    </div>
+        <a href="/gallery/index.html">>Gallery<br></a><br>
+        <div class="tab-group">
+    <button class="tab-btn active" data-tab="tab1">Tab 1</button>
+    <button class="tab-btn" data-tab="tab2">Tab 2</button>
+    <button class="tab-btn" data-tab="tab3">Tab 3</button>
+    </div>
+        <a href="/journal/index.html">>Journal<br></a><br>
+        <div class="tab-group">
+    <button class="tab-btn active" data-tab="tab1">Tab 1</button>
+    <button class="tab-btn" data-tab="tab2">Tab 2</button>
+    <button class="tab-btn" data-tab="tab3">Tab 3</button>
+    </div>
+        <a href="/about.html">>About<br></a><br>
+        <div class="tab-group">
+    <button class="tab-btn active" data-tab="tab1">Tab 1</button>
+    <button class="tab-btn" data-tab="tab2">Tab 2</button>
+    <button class="tab-btn" data-tab="tab3">Tab 3</button>
+    </div>
+        <a href="/contact.html">>Contact<br></a><br>
+      <h3>
     </nav>
 
     <nav class="main-side">
       <h2>Inspo</h2>
-      <P>huge shoutout to ohmi</P>
+      <p>huge shoutout to ohmi</p>
       <a href="https://vertpush.neocities.org/">
         <img style="width: 88px; height: 31px;" src="https://vertpush.neocities.org/buttons/vertpushbutton2.gif" alt="vertpush button"/>
       </a>
       <br>
       <h3>EXTRAS</h3>
 
-      <a href="#">» Gallery</a><br>
-      <a href="#">» Web Tools</a><br>
-      <a href="#">» Resources</a><br>
-      
+      <a href="#">&raquo; Gallery</a><br>
+      <a href="#">&raquo; Web Tools</a><br>
+      <a href="#">&raquo; Resources</a><br>
     </nav>
 
-  <nav class="main-img">
- <h2>Hi, I’m shin</h2>
-<p>Melbourne-based; studying building design + architecture. Hyperpop enjoyer. Chronic maker.</p>
-
-<h2>What do you do?</h2>
-<p>Painting, 3D renders, sewing, photography, 3D printing, FPV drones—always learning, always tinkering.</p>
-
-<h2>what is ONEST?</h2>
-<p>this site is hub of everything I create and want to share anyting intresting.
-A space to archive, explore, and rediscover my work</p>
-
-
-
-  </nav>
-
-
-   
-
-  <div class="right-stack"> 
-    
-    <section class="updateboard">
-    <h4>Update bored </h4>
-    <p style="font-size: 11px;" > 
+    <nav class="main-img">
       
-      »10/17/25 <br> need to clean up the nav box <br> acutally add info and to the mian box <br> work on web badge box<br> bruh<br> <br> 
+      <h2>Hi, I'm jane</h2><img style="width: 20%; height: 1;"src="assets/img/face.png">
+      <img style="width: 100%; height: 600;"src="assets/img/DSC_1034-2.jpg">
+      <p> studying building design, im a porter robinson and jane remover fan, lucy bedroke too, i love scifi movies and anime like evangelion </p>
 
+      <h2>What do you do?</h2>
+      Painting, 3D renders, sewing, photography, 3D printing, FPV drones—always learning, always tinkering.
 
-      »9/8/26 <br> cought up with what the problme is, with allthe ai things i was doing, there  is a lot of thinbgs to clean and re-learn. big things coming up on the loer of this build, probs moer in fo in the projects. <br> fixed the  webside badge and moved the tables ato fir a wider screen <br> for now i will not ry to make it accessable to phone users. 
-    </p>
-   </section>
-   
-    <section class="jukebox">
-    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6nMMMloeKI5z0RzZxuKvG8?utm_source=generator&theme=0&si=2e7a57315d734670" width="100%" height="600" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-   </section>
+      <h2>what is ONEST?</h2>
+      <p>Welcome to my small corner of the internet. I'm really bad at coding, but with the help of evil AI, I'm slowly getting it working. I'm going to post anything from what I'm thinking about to things I did for uni, college events, and projects. This site is going to be my place to record things I find interesting, archive my work, explore ideas, and rediscover things I've made</p>
+    </nav>
 
-    <section class="side-chat">
-      <h3>temp visitors book</h3>
-  <iframe src="https://www3.cbox.ws/box/?boxid=3547828&boxtag=wdF9if"
-          width="100%" height="450"
-          allowtransparency="yes" allow="autoplay"
-          frameborder="0" marginheight="0" marginwidth="0"
-          scrolling="auto"></iframe>
-  </section> 
+    <div class="right-stack">
 
-  </div>
+      <section class="updateboard">
+        <h4>Update board</h4>
+        <p style="font-size: 11px;">
+          >10/17/25 <br> need to clean up the nav box <br> actually add info and to the main box <br> work on web badge box<br> bruh<br> <br>
 
+          >;9/8/26 <br> caught up with what the problem is, with all the ai things i was doing, there is a lot of things to clean and re-learn. big things coming up on the lower of this build, probs more info in the projects. <br> fixed the website badge and moved the tables to fit a wider screen <br> for now i will not try to make it accessible to phone users.
+        </p>
+      </section>
+
+      <section class="jukebox">
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6nMMMloeKI5z0RzZxuKvG8?utm_source=generator&theme=0&si=2e7a57315d734670" width="100%" height="600" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </section>
+
+      <section class="side-chat">
+        <h3>temp visitors book</h3>
+        <iframe src="https://www3.cbox.ws/box/?boxid=3547828&boxtag=wdF9if"
+                width="100%" height="450"
+                allowtransparency="yes" allow="autoplay"
+                frameborder="0" marginheight="0" marginwidth="0"
+                scrolling="auto"></iframe>
+      </section>
+
+    </div>
 
     <nav class="nav2">
       <h2>cool links</h2>
       <div class="title"></div>
     </nav>
+
     <footer class="box footer">
       <div style="background-color:#205274;text-align:center;padding:10px;margin-top:7px;">© 2024 0nest</div>
     </footer>
   </div>
-</div>
 
   <!-- Keep these if main.js uses jQuery or controls the .window -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

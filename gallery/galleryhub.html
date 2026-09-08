@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery Hub</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #6a9895;
+    background: #120a24;
+  }
+  a { color: inherit; }
+
+  /* top nav */
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 10px 16px;
+    background: #b1aeae;
+    border-bottom: 1px solid #ccc;
+    transition: transform 0.2s ease;
+  }
+  .topnav.hide { transform: translateY(-100%); }
+  .navmenu { position: relative; }
+  .navmenu > button {
+    background: #f2f2f2;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  .navdrop {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    min-width: 160px;
+    z-index: 20;
+  }
+  .navmenu.open .navdrop { display: block; }
+  .navdrop a, .navdrop div.row {
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #eee;
+  }
+  .navdrop a:last-child, .navdrop div.row:last-child { border-bottom: none; }
+  .navdrop a:hover, .navdrop div.row:hover { background: #f2f2f2; }
+
+  /* layout */
+  .stage { max-width: 1200px; margin: 0 auto; padding: 20px 16px 60px; }
+  .stage h1 { font-size: 1.4rem; margin: 0 0 6px; }
+  .stage p.sub { color: #555; font-size: 0.9rem; margin: 0 0 20px; max-width: 560px; }
+
+  .grid5 {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 12px;
+  }
+  .col {
+    border: 1px solid #ccc;
+  }
+  .col-head {
+    padding: 8px 12px;
+    background: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+
+  /* left: rotating image */
+  .lightboard { padding: 10px; min-height: 420px; display: flex; flex-direction: column; }
+  .frame {
+    flex: 1;
+    border: 1px solid #ccc;
+    position: relative;
+    background: #eee;
+    display: flex;
+    align-items: flex-end;
+  }
+  .frame .tag {
+    padding: 10px;
+    background: rgba(121, 113, 113, 0.85);
+    font-size: 0.95rem;
+  }
+  .frame .tag small { display: block; font-weight: normal; color: #555; }
+  .path { margin-top: 8px; font-size: 0.75rem; color: #666; }
+
+  /* middle: directory */
+  .droom { border-bottom: 1px solid #eee; }
+  .droom:last-child { border-bottom: none; }
+  .droom > button {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .dsubs { display: none; padding: 0 12px 10px; }
+  .droom.open .dsubs { display: block; }
+  .dsubs a { display: block; padding: 4px 0; font-size: 0.85rem; text-decoration: none; color: #333; }
+  .dsubs a:hover { text-decoration: underline; }
+  .more { font-size: 0.8rem; color: #06c; cursor: pointer; padding: 4px 0; }
+
+  /* right: notice board */
+  .bbody { padding: 10px; display: flex; flex-direction: column; }
+  .preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+    padding: 24px 4px;
+    border-bottom: 1px solid #eee;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .bbody .preview:last-child { border-bottom: none; }
+  .preview:hover { background: #fafafa; }
+  .preview:hover h4 { text-decoration: underline; }
+  .preview.reverse { grid-template-columns: 1fr 1fr; }
+  .preview.reverse .pimg { order: 2; }
+  .preview.reverse .ptext { order: 1; }
+  .pimg { width: 100%; aspect-ratio: 4 / 3; background: #ddd; }
+  .preview h4 { margin: 0 0 8px; font-size: 1.1rem; }
+  .preview p { margin: 0 0 8px; font-size: 0.85rem; color: #555; line-height: 1.5; }
+  .chiprow { font-size: 0.75rem; color: #777; }
+
+  @media (max-width: 800px) {
+    .grid5 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav" id="topnav">
+  <div class="navmenu">
+    <button onclick="toggleMenu(this)">Index ▾</button>
+    <div class="navdrop">
+      <a href="/home.html">Home</a>
+      <a href="#">Journal</a>
+      <a href="#">Projects</a>
+    </div>
+  </div>
+  <div class="navmenu">
+    <button onclick="toggleMenu(this)">Jukebox ▾</button>
+    <div class="navdrop">
+      <div class="row">Now playing (unfinished)</div>
+      <div class="row">Queue (in progress)</div>
+    </div>
+  </div>
+  <div class="navmenu">
+    <button onclick="toggleMenu(this)">Theme ▾</button>
+    <div class="navdrop">
+      <div class="row">Light</div>
+      <div class="row">Dark</div>
+    </div>
+  </div>
+</nav>
+
+<div class="stage">
+  <h1>Gallery Hub</h1>
+  <p class="sub">An index of every room in the gallery. Browse the directory, or check the notice board for previews.</p>
+
+  <div class="grid5">
+    <div class="col lightboard">
+      <div id="frame" class="frame"></div>
+      <div class="path" id="framepath">gallery/cities/japan/img_0001.jpg</div>
+    </div>
+
+    <div class="col">
+      <div class="col-head">Directory</div>
+      <div id="dirlist"></div>
+    </div>
+
+    <div class="col">
+      <div class="col-head">Room previews</div>
+      <div class="bbody" id="boardlist"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ROOMS = [ 
+  { name: "Cities", path: "gallery/cities", subs: ["Korea","Japan","Sydney","China"],
+    blurb: "Skylines, alleys, and city scenes." },
+  { name: "Cats", path: "gallery/cats", subs: ["Orange","Black"],
+    blurb: "A collection of cat photos." },
+  { name: "Nature Pictures", path: "gallery/nature", subs: ["Water","Sky","Trails"],
+    blurb: "Outdoor and nature shots." },
+  { name: "Architecture", path: "gallery/architecture", subs: ["Facades","Interiors","Ruins"],
+    blurb: "Buildings and structures." },
+  { name: "Night Walk", path: "gallery/night-walk", subs: ["Streetlights","Neon","Empty Roads"],
+    blurb: "Nighttime walks and street atmosphere." },
+  { name: "Ratworks", path: "gallery/ratworks", subs: ["Sketches","Studies"],
+    blurb: "Rat-themed collection." },
+  { name: "Digital Designs", path: "gallery/digital-designs", subs: ["Posters","UI","Type"],
+    blurb: "Digital art and design work." },
+  { name: "AI Drawings", path: "gallery/ai-drawings", subs: ["Portraits","Landscapes","Abstract"],
+    blurb: "AI-generated artwork." },
+  { name: "Trees", path: "gallery/trees", subs: ["Bark","Canopy","Roots"],
+    blurb: "Tree photography." }
+];
+
+// directory
+const dirlist = document.getElementById('dirlist');
+ROOMS.forEach(room => {
+  const first3 = room.subs.slice(0, 3);
+  const rest = room.subs.slice(3);
+  const el = document.createElement('div');
+  el.className = 'droom';
+  el.innerHTML =
+    '<button onclick="this.parentElement.classList.toggle(\'open\')">' + room.name + '</button>' +
+    '<div class="dsubs">' +
+      first3.map(s => '<a href="#">' + s + '</a>').join('') +
+      (rest.length
+        ? '<div class="more" onclick="toggleExtra(this)">+ ' + rest.length + ' more</div>' +
+          '<div class="extra" style="display:none">' + rest.map(s => '<a href="#">' + s + '</a>').join('') + '</div>'
+        : '') +
+    '</div>';
+  dirlist.appendChild(el);
+});
+function toggleExtra(node) {
+  const extra = node.nextElementSibling;
+  const open = extra.style.display === 'block';
+  extra.style.display = open ? 'none' : 'block';
+  node.textContent = open ? node.dataset.label || node.textContent : 'Show less';
+  if (!open) node.dataset.label = node.dataset.label || ('+ more');
+}
+
+// notice board
+const boardlist = document.getElementById('boardlist');
+ROOMS.forEach((room, i) => {
+  const el = document.createElement('a');
+  el.href = '#' + room.path;
+  el.className = 'preview' + (i % 2 === 1 ? ' reverse' : '');
+  el.innerHTML =
+    '<div class="pimg"></div>' +
+    '<div class="ptext">' +
+      '<h4>' + room.name + '</h4>' +
+      '<p>' + room.blurb + '</p>' +
+      '<div class="chiprow">' + room.subs.slice(0, 3).join(', ') + '</div>' +
+    '</div>';
+  boardlist.appendChild(el);
+});
+
+// rotating image
+const frame = document.getElementById('frame');
+const framepath = document.getElementById('framepath');
+let allShots = [];
+ROOMS.forEach(r => r.subs.forEach((s, i) => allShots.push({ room: r, sub: s, file: 'img_' + String(1000 + i * 7).slice(1) + '.jpg' })));
+
+function nextShot() {
+  const shot = allShots[Math.floor(Math.random() * allShots.length)];
+  frame.innerHTML = '<div class="tag">' + shot.room.name + '<small>' + shot.sub + '</small></div>';
+  framepath.textContent = shot.room.path + '/' + shot.sub.toLowerCase() + '/' + shot.file;
+}
+nextShot();
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!reduceMotion) setInterval(nextShot, 4200);
+
+// nav dropdowns
+document.querySelectorAll('.navmenu').forEach(m => {
+  m.querySelector('button').addEventListener('click', e => {
+    e.stopPropagation();
+    const wasOpen = m.classList.contains('open');
+    document.querySelectorAll('.navmenu').forEach(x => x.classList.remove('open'));
+    if (!wasOpen) m.classList.add('open');
+  });
+});
+document.addEventListener('click', () => document.querySelectorAll('.navmenu').forEach(x => x.classList.remove('open')));
+function toggleMenu() {}
+
+// hide nav on scroll down
+let lastY = window.scrollY;
+const topnav = document.getElementById('topnav');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (y > lastY && y > 90) topnav.classList.add('hide');
+  else topnav.classList.remove('hide');
+  lastY = y;
+});
+</script>
+</body>
+</html>

@@ -271,6 +271,45 @@
 </head>
 
 
+*/ the is the bits for webamp!! 
+
+
+  <div id="app" style=" position: relative; right: -530px; top: 400px ">
+      <!-- Webamp will render as a child of this div -->
+    </div>
+    
+    <script type="module">
+      import Webamp from "https://unpkg.com/webamp@^2/butterchurn";
+      const webamp = new Webamp({
+        initialTracks: [
+          {
+            metaData: {
+              artist: "DJ Mike Llama",
+              title: "Llama Whippin' Intro",
+            },
+            // NOTE: Your audio file must be served from the same domain as your HTML
+            // file, or served with permissive CORS HTTP headers:
+            // https://docs.webamp.org/docs/guides/cors
+            url: "https://github.com/ONEST-SHIN/ONEST-SHIN.github.io/tree/main/assets/webamp/Jane Remover - Summer Fling.mp3",
+            duration: 5.322286,
+          },
+          {
+            metaData: {
+              artist: "Some Artist",
+              title: "Title of Second Track",
+            },
+            url: "https://github.com/ONEST-SHIN/ONEST-SHIN.github.io/tree/main/assets/webamp/Jane Remover - Summer Fling.mp3",
+            duration: 5.322286,
+          },
+        ],
+      });
+
+      webamp.renderInto(document.getElementById("app"));
+    </script>
+
+
+
+
 <body>
  */WEB link badge  
   <div class="window" id="linkWindow" style="left:1vw; top:20vh;">
@@ -441,38 +480,6 @@
   </div>
 
 
-*/ the is the bits for webamp!! 
-  <div id="app" style="height: 100vh; position: relative">
-      <!-- Webamp will render as a child of this div -->
-    </div>
-    <script type="module">
-      import Webamp from "https://unpkg.com/webamp@^2/butterchurn";
-      const webamp = new Webamp({
-        initialTracks: [
-          {
-            metaData: {
-              artist: "DJ Mike Llama",
-              title: "Llama Whippin' Intro",
-            },
-            // NOTE: Your audio file must be served from the same domain as your HTML
-            // file, or served with permissive CORS HTTP headers:
-            // https://docs.webamp.org/docs/guides/cors
-            url: "https://github.com/ONEST-SHIN/ONEST-SHIN.github.io/tree/main/assets/webamp/Jane Remover - Summer Fling.mp3",
-            duration: 5.322286,
-          },
-          {
-            metaData: {
-              artist: "Some Artist",
-              title: "Title of Second Track",
-            },
-            url: "https://github.com/ONEST-SHIN/ONEST-SHIN.github.io/tree/main/assets/webamp/Jane Remover - Summer Fling.mp3",
-            duration: 5.322286,
-          },
-        ],
-      });
-
-      webamp.renderInto(document.getElementById("app"));
-    </script>
 
 
   <!-- Keep these if main.js uses jQuery or controls the .window -->

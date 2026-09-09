@@ -442,24 +442,37 @@
 
 
 */ the is the bits for webamp!! 
-  <div  id="webamp" style="height: 100vh"></div>
-    
-
-
-<script type="module">
-      import Webamp from "https://unpkg.com/webamp@^2";
+  <div id="app" style="height: 100vh; position: relative">
+      <!-- Webamp will render as a child of this div -->
+    </div>
+    <script type="module">
+      import Webamp from "https://unpkg.com/webamp@^2/butterchurn";
       const webamp = new Webamp({
         initialTracks: [
           {
-            url: "./assets/webamp/Jane Remover - Summer Fling.mp3",
-            metaData: { artist: "Your Name", title: "Track Title" },
-            duration: 180
-          }
-        ]
+            metaData: {
+              artist: "DJ Mike Llama",
+              title: "Llama Whippin' Intro",
+            },
+            // NOTE: Your audio file must be served from the same domain as your HTML
+            // file, or served with permissive CORS HTTP headers:
+            // https://docs.webamp.org/docs/guides/cors
+            url: "https://github.com/ONEST-SHIN/ONEST-SHIN.github.io/tree/main/assets/webamp/Jane Remover - Summer Fling.mp3",
+            duration: 5.322286,
+          },
+          {
+            metaData: {
+              artist: "Some Artist",
+              title: "Title of Second Track",
+            },
+            url: "https://github.com/ONEST-SHIN/ONEST-SHIN.github.io/tree/main/assets/webamp/Jane Remover - Summer Fling.mp3",
+            duration: 5.322286,
+          },
+        ],
       });
-      webamp.renderWhenReady(document.getElementById("webamp"));
-  </script>
 
+      webamp.renderInto(document.getElementById("app"));
+    </script>
 
 
   <!-- Keep these if main.js uses jQuery or controls the .window -->

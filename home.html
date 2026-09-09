@@ -440,6 +440,28 @@
     </footer>
   </div>
 
+
+*/ the is the bits for webamp!! 
+  <div  id="webamp" style="height: 100vh"></div>
+    
+
+
+<script type="module">
+      import Webamp from "https://unpkg.com/webamp@^2";
+      const webamp = new Webamp({
+        initialTracks: [
+          {
+            url: "./assets/webamp/Jane Remover - Summer Fling.mp3",
+            metaData: { artist: "Your Name", title: "Track Title" },
+            duration: 180
+          }
+        ]
+      });
+      webamp.renderWhenReady(document.getElementById("webamp"));
+  </script>
+
+
+
   <!-- Keep these if main.js uses jQuery or controls the .window -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="assets/js/main.js"></script>
